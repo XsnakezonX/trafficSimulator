@@ -1,0 +1,24 @@
+#!/bin/bash
+echo
+echo Compiling queue.c
+echo Compiling runOneSimulation.c
+echo Compiling runSimulations.c
+gcc -ansi -I./ -c queue.c -o queue.o
+gcc -ansi -I./ -c runOneSimulation.c -o runOneSimulation.o
+gcc -ansi -I./ -c runSimulations.c -o runSimulations.o
+# Only do the link if the compilation returned no errors.
+if [[ $? -eq 0 ]]
+then
+   echo Program compiled ok
+   echo
+   echo Linking
+   gcc -lm runSimulations.o queue.o runOneSimulation.o -lgsl -lgslcblas -o runSimulations
+   if [[ $? -eq 0 ]]
+   then
+      echo Program compiled and linked ok
+   else
+      echo Link failed
+   fi
+else
+   echo Compile failed
+fi
